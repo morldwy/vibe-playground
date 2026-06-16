@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hitster Trainer - Musik-Ratespiel</title>
+  <!-- Google Fonts: Outfit & Space Grotesk -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Hintergrund-Effekte -->
+  <div class="bg-glow bg-glow-1"></div>
+  <div class="bg-glow bg-glow-2"></div>
+
+  <div class="app-container">
+    <!-- Header -->
+    <header class="app-header">
+      <h1 class="app-title">HITSTER <span class="accent-text">TRAINER</span></h1>
+      <div class="game-stats">
+        <div class="stat-box">
+          <span class="stat-label">Punkte</span>
+          <span id="score-display" class="stat-value">0</span>
+        </div>
+        <div class="stat-box">
+          <span class="stat-label">Leben</span>
+          <span id="lives-display" class="stat-value">❤️❤️❤️</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- Hauptbereich -->
+    <main class="game-layout">
+      
+      <!-- OBERER BEREICH: Aktueller Song & Steuerung -->
+      <section class="current-round-panel">
+        
+        <!-- Vinyl-Schallplatten-Visualisierung -->
+        <div class="vinyl-container">
+          <div id="vinyl-disc" class="vinyl-disc">
+            <div class="vinyl-label"></div>
+          </div>
+          <div class="audio-controls">
+            <button id="play-pause-btn" class="control-btn" aria-label="Play/Pause">
+              <!-- Play Icon -->
+              <svg id="play-icon" viewBox="0 0 24 24" width="24" height="24">
+                <path d="M8 5v14l11-7z" fill="currentColor"/>
+              </svg>
+              <!-- Pause Icon (hidden by default) -->
+              <svg id="pause-icon" viewBox="0 0 24 24" width="24" height="24" style="display: none;">
+                <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" fill="currentColor"/>
+              </svg>
+            </button>
+            <button id="replay-btn" class="control-btn" aria-label="Song wiederholen">
+              <svg viewBox="0 0 24 24" width="24" height="24">
+                <path d="M12 5V1L7 6l5 5V7c3.31 0 6 2.69 6 6s-2.69 6-6 6-6-2.69-6-6H4c0 4.42 3.58 8 8 8s8-3.58 8-8-3.58-8-8-8z" fill="currentColor"/>
+              </svg>
+            </button>
+          </div>
+          <div class="playback-progress">
+            <div id="progress-bar" class="progress-bar-fill"></div>
+          </div>
+        </div>
+
+        <!-- 3D Flip Card (Aktueller Song) -->
+        <div class="card-scene">
+          <div id="current-card" class="hitster-card">
+            <!-- Vorderseite (Verdeckt beim Raten) -->
+            <div class="card-face card-front">
+              <div class="card-inner-design">
+                <div class="card-logo">?</div>
+                <div class="card-instruction">Höre den Song & platziere ihn</div>
+              </div>
+            </div>
+            <!-- Rückseite (Aufgelöst) -->
+            <div class="card-face card-back">
+              <img id="reveal-cover" class="card-cover" src="data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100'%3E%3Crect width='100' height='100' fill='%231f1f2e'/%3E%3C/svg%3E" alt="Album Cover">
+              <div class="card-info">
+                <div id="reveal-year" class="card-year">1999</div>
+                <div id="reveal-title" class="card-title">Song Title</div>
+                <div id="reveal-artist" class="card-artist">Artist Name</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- MITTLERER BEREICH: Optionale Tipps (Titel, Interpret, Jahr) -->
+      <section id="guessing-panel" class="guessing-panel glass-panel">
+        <h3 class="section-title">Zusatztipps abgeben (Optional, gibt Bonuspunkte)</h3>
+        <div class="guess-grid">
+          <div class="input-group">
+            <label for="guess-artist">Interpret</label>
+            <input type="text" id="guess-artist" placeholder="z.B. Queen" autocomplete="off">
+          </div>
+          <div class="input-group">
+            <label for="guess-title">Songtitel</label>
+            <input type="text" id="guess-title" placeholder="z.B. Bohemian Rhapsody" autocomplete="off">
+          </div>
+          <div class="input-group">
+            <label for="guess-year">Genaues Jahr</label>
+            <input type="number" id="guess-year" placeholder="z.B. 1975" min="1900" max="2026" autocomplete="off">
+          </div>
+        </div>
+      </section>
+
+      <!-- UNTERER BEREICH: Die Zeitachse (Timeline) -->
+      <section class="timeline-section">
+        <h2 class="section-title">Deine Zeitachse</h2>
+        <div class="timeline-instruction">Wähle einen leuchtenden Steckplatz (<span class="slot-indicator-inline">+</span>), um den Song einzuordnen</div>
+        <div class="timeline-container-wrapper">
+          <div id="timeline-track" class="timeline-track">
+            <!-- Wird dynamisch mit Slots und Karten befüllt -->
+          </div>
+        </div>
+      </section>
+
+      <!-- Aktionen nach der Platzierung -->
+      <div id="action-panel" class="action-panel hidden">
+        <div id="feedback-message" class="feedback-message">Korrekt platziert! +100 Punkte</div>
+        <div id="bonus-feedback" class="bonus-feedback"></div>
+        <button id="next-round-btn" class="action-btn next-btn">Nächste Runde</button>
+      </div>
+
+    </main>
+
+    <!-- Audio Player (Hidden HTML5 Audio element) -->
+    <audio id="audio-player" preload="auto"></audio>
+
+    <!-- Modal für Game Over / Win -->
+    <div id="game-over-modal" class="modal-overlay hidden">
+      <div class="modal-content glass-panel">
+        <h2 id="modal-title" class="modal-heading">Spiel vorbei!</h2>
+        <div class="modal-body">
+          <p>Du hast eine Zeitachse von <span id="final-cards-count" class="accent-text">0</span> Songs aufgebaut!</p>
+          <div class="final-score-box">
+            <span class="final-score-label">Gesamtpunkte:</span>
+            <span id="final-score" class="final-score-value">0</span>
+          </div>
+        </div>
+        <button id="restart-btn" class="action-btn restart-btn">Erneut spielen</button>
+      </div>
+    </div>
+
+  </div>
+
+  <script src="songs.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
