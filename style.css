@@ -38,12 +38,17 @@
   padding: 0;
 }
 
+html, body {
+  height: 100dvh;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
 body {
   font-family: var(--font-family-sans);
   background-color: var(--color-bg-deep);
   color: var(--color-text-primary);
-  height: 100dvh;
-  overflow: hidden;
   position: relative;
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
@@ -447,30 +452,8 @@ body {
 
 .guess-grid {
   display: grid;
-  grid-template-columns: 1fr;
-  gap: 12px;
-}
-
-@media (min-width: 480px) {
-  .guess-grid {
-    grid-template-columns: 1fr 1fr;
-  }
-  .guess-grid .input-group:last-child {
-    grid-column: span 2;
-  }
-}
-
-.input-group {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-
-.input-group label {
-  font-size: 0.7rem;
-  text-transform: uppercase;
-  color: var(--color-text-secondary);
-  letter-spacing: 1px;
+  grid-template-columns: 2.2fr 2.2fr 1fr;
+  gap: 8px;
 }
 
 .input-group input {
@@ -520,10 +503,9 @@ body {
 
 .timeline-container-wrapper {
   overflow-x: auto;
-  padding: 10px 6px;
-  background: rgba(0, 0, 0, 0.15);
-  border-radius: 16px;
-  border: 1px solid rgba(255, 255, 255, 0.03);
+  padding: 10px 4px;
+  background: transparent;
+  border: none;
   scrollbar-width: thin;
   scrollbar-color: rgba(0, 240, 255, 0.3) transparent;
   min-height: 0;
@@ -536,6 +518,20 @@ body {
   gap: 12px;
   min-width: max-content;
   position: relative;
+  padding: 8px 0;
+}
+
+.timeline-track::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: 2px;
+  background: linear-gradient(to right, transparent, var(--color-accent) 15%, var(--color-accent) 85%, transparent);
+  z-index: 0;
+  transform: translateY(-50%);
+  opacity: 0.3;
 }
 
 /* Timeline-Steckplätze (Slots) */
@@ -544,7 +540,7 @@ body {
   height: 38px;
   border-radius: 50%;
   border: 2px dashed rgba(0, 240, 255, 0.3);
-  background: rgba(0, 240, 255, 0.05);
+  background: #0f1021;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -555,6 +551,8 @@ body {
   transition: all var(--transition-normal);
   flex-shrink: 0;
   animation: pulse-border 2s infinite;
+  position: relative;
+  z-index: 1;
 }
 
 @keyframes pulse-border {
@@ -592,6 +590,8 @@ body {
   flex-shrink: 0;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
   transition: all var(--transition-normal);
+  position: relative;
+  z-index: 1;
 }
 
 .timeline-card:hover {
