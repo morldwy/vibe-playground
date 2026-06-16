@@ -42,8 +42,8 @@ body {
   font-family: var(--font-family-sans);
   background-color: var(--color-bg-deep);
   color: var(--color-text-primary);
-  min-height: 100dvh;
-  overflow-x: hidden;
+  height: 100dvh;
+  overflow: hidden;
   position: relative;
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
@@ -86,10 +86,22 @@ body {
 .app-container {
   max-width: 600px;
   margin: 0 auto;
-  padding: 16px;
+  padding: 12px;
   display: flex;
   flex-direction: column;
-  min-height: 100dvh;
+  height: 100%;
+  max-height: 100dvh;
+  overflow: hidden;
+}
+
+.game-layout {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+  gap: 8px;
 }
 
 /* Glassmorphism Panel Basis */
@@ -108,7 +120,7 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 24px;
+  margin-bottom: 12px;
 }
 
 .app-title {
@@ -165,7 +177,7 @@ body {
   justify-content: space-around;
   align-items: center;
   gap: 16px;
-  margin-bottom: 24px;
+  margin-bottom: 12px;
 }
 
 /* Schallplatte */
@@ -178,8 +190,8 @@ body {
 }
 
 .vinyl-disc {
-  width: 130px;
-  height: 130px;
+  width: 100px;
+  height: 100px;
   border-radius: 50%;
   background: repeating-radial-gradient(
     circle,
@@ -206,8 +218,8 @@ body {
 }
 
 .vinyl-label {
-  width: 45px;
-  height: 45px;
+  width: 35px;
+  height: 35px;
   border-radius: 50%;
   background: linear-gradient(135deg, var(--color-secondary), var(--color-accent));
   display: flex;
@@ -218,8 +230,8 @@ body {
 
 .vinyl-label::after {
   content: '';
-  width: 10px;
-  height: 10px;
+  width: 8px;
+  height: 8px;
   border-radius: 50%;
   background-color: var(--color-bg-deep);
 }
@@ -243,8 +255,8 @@ body {
   background: var(--glass-bg);
   border: 1px solid var(--glass-border);
   color: white;
-  width: 44px;
-  height: 44px;
+  width: 38px;
+  height: 38px;
   border-radius: 50%;
   display: flex;
   justify-content: center;
@@ -283,8 +295,8 @@ body {
    3D CARD SCENE
    ========================================================================== */
 .card-scene {
-  width: 140px;
-  height: 200px;
+  width: 110px;
+  height: 160px;
   perspective: 1000px;
 }
 
@@ -372,7 +384,7 @@ body {
 
 .card-cover {
   width: 100%;
-  height: 110px;
+  height: 80px;
   object-fit: cover;
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
@@ -388,7 +400,7 @@ body {
 
 .card-year {
   font-family: var(--font-family-mono);
-  font-size: 1.3rem;
+  font-size: 1.1rem;
   font-weight: 800;
   color: var(--color-secondary);
   text-shadow: 0 0 5px rgba(255, 0, 127, 0.5);
@@ -417,15 +429,19 @@ body {
    GUESSING PANEL (OPTIONAL INPUTS)
    ========================================================================== */
 .guessing-panel {
-  margin-bottom: 24px;
+  margin-bottom: 12px;
+}
+
+.guessing-panel.glass-panel {
+  padding: 12px;
 }
 
 .section-title {
-  font-size: 0.85rem;
+  font-size: 0.8rem;
   text-transform: uppercase;
-  letter-spacing: 1.5px;
+  letter-spacing: 1px;
   color: var(--color-text-secondary);
-  margin-bottom: 14px;
+  margin-bottom: 8px;
   font-family: var(--font-family-mono);
 }
 
@@ -461,10 +477,10 @@ body {
   background: rgba(0, 0, 0, 0.2);
   border: 1px solid var(--glass-border);
   border-radius: 10px;
-  padding: 10px 14px;
+  padding: 8px 12px;
   color: white;
   font-family: var(--font-family-sans);
-  font-size: 0.9rem;
+  font-size: 0.85rem;
   transition: all var(--transition-normal);
 }
 
@@ -482,7 +498,9 @@ body {
   flex: 1;
   display: flex;
   flex-direction: column;
-  margin-bottom: 24px;
+  margin-bottom: 0px;
+  min-height: 0;
+  overflow: hidden;
 }
 
 .timeline-instruction {
@@ -502,12 +520,13 @@ body {
 
 .timeline-container-wrapper {
   overflow-x: auto;
-  padding: 16px 8px;
+  padding: 10px 6px;
   background: rgba(0, 0, 0, 0.15);
   border-radius: 16px;
   border: 1px solid rgba(255, 255, 255, 0.03);
   scrollbar-width: thin;
   scrollbar-color: rgba(0, 240, 255, 0.3) transparent;
+  min-height: 0;
 }
 
 /* Timeline-Leiste */
@@ -521,8 +540,8 @@ body {
 
 /* Timeline-Steckplätze (Slots) */
 .timeline-slot {
-  width: 50px;
-  height: 50px;
+  width: 38px;
+  height: 38px;
   border-radius: 50%;
   border: 2px dashed rgba(0, 240, 255, 0.3);
   background: rgba(0, 240, 255, 0.05);
@@ -530,7 +549,7 @@ body {
   justify-content: center;
   align-items: center;
   cursor: pointer;
-  font-size: 1.5rem;
+  font-size: 1.2rem;
   font-weight: 700;
   color: var(--color-accent);
   transition: all var(--transition-normal);
@@ -562,8 +581,8 @@ body {
 
 /* Plazierte Karten auf der Timeline */
 .timeline-card {
-  width: 100px;
-  height: 140px;
+  width: 80px;
+  height: 115px;
   background: #111222;
   border-radius: 12px;
   border: 2px solid rgba(255, 255, 255, 0.08);
@@ -602,7 +621,7 @@ body {
 
 .timeline-card-cover {
   width: 100%;
-  height: 75px;
+  height: 55px;
   object-fit: cover;
   border-bottom: 1px solid rgba(255, 255, 255, 0.06);
 }
@@ -647,13 +666,12 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 16px;
+  gap: 10px;
   background: var(--glass-bg);
   border: 1px solid var(--glass-border);
   backdrop-filter: var(--glass-blur);
   border-radius: 16px;
-  padding: 16px;
-  margin-top: auto;
+  padding: 12px;
   animation: slide-up 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
 
@@ -688,10 +706,10 @@ body {
 
 .action-btn {
   width: 100%;
-  padding: 14px 24px;
+  padding: 10px 20px;
   border-radius: 12px;
   font-family: var(--font-family-mono);
-  font-size: 1rem;
+  font-size: 0.9rem;
   font-weight: 700;
   text-transform: uppercase;
   cursor: pointer;

@@ -94,6 +94,7 @@ function startNewRound() {
   resetGuessInputs();
   currentCard.classList.remove('flipped');
   actionPanel.classList.add('hidden');
+  document.getElementById('guessing-panel').classList.remove('hidden');
   
   // Nächsten Song auswählen
   const nextSong = getRandomSong();
@@ -356,6 +357,7 @@ function evaluateGuess() {
 
   // Action Panel (Weiter-Knopf) anzeigen
   actionPanel.classList.remove('hidden');
+  document.getElementById('guessing-panel').classList.add('hidden');
 
   // Timeline neu rendern, um die neue Karte (falls korrekt) anzuzeigen
   // Wir verzögern das Rendern kurz, damit der Flip-Effekt im Fokus bleibt
@@ -384,15 +386,19 @@ function evaluateBonusGuesses() {
   const correctTitle = normalizeString(state.currentSong.title);
   const correctYear = state.currentSong.year;
 
-  // Einfache Textübereinstimmung (enthält den String oder ist sehr nah dran)
-  if (artistGuess.length > 2 && (correctArtist.includes(artistGuess) || artistGuess.includes(correctArtist))) {
+  // Ähnlichkeit mit Levenshtein-Distanz berechnen
+  const artistSimilarity = getSimilarity(artistGuess, correctArtist);
+  const titleSimilarity = getSimilarity(titleGuess, correctTitle);
+
+  // Leichte Rechtschreibfehler erlauben (Ähnlichkeit >= 0.75 oder gegenseitiges Enthaltensein)
+  if (artistGuess.length > 2 && (artistSimilarity >= 0.75 || correctArtist.includes(artistGuess) || artistGuess.includes(correctArtist))) {
     bonus += 50;
     guessArtistInput.style.borderColor = 'var(--color-success)';
   } else if (guessArtistInput.value.trim() !== '') {
     guessArtistInput.style.borderColor = 'var(--color-error)';
   }
 
-  if (titleGuess.length > 2 && (correctTitle.includes(titleGuess) || titleGuess.includes(correctTitle))) {
+  if (titleGuess.length > 2 && (titleSimilarity >= 0.75 || correctTitle.includes(titleGuess) || titleGuess.includes(correctTitle))) {
     bonus += 50;
     guessTitleInput.style.borderColor = 'var(--color-success)';
   } else if (guessTitleInput.value.trim() !== '') {
@@ -495,6 +501,48 @@ function updateStatsUI() {
     }
   }
   livesDisplay.textContent = hearts;
+}
+
+// ==========================================================================
+// ÄHNLICHKEITSBERECHNUNG (LEVENSHTEIN-DISTANZ)
+// ==========================================================================
+function getSimilarity(s1, s2) {
+  let longer = s1;
+  let shorter = s2;
+  if (s1.length < s2.length) {
+    longer = s2;
+    shorter = s1;
+  }
+  const longerLength = longer.length;
+  if (longerLength === 0) {
+    return 1.0;
+  }
+  return (longerLength - editDistance(longer, shorter)) / parseFloat(longerLength);
+}
+
+function editDistance(s1, s2) {
+  const costs = [];
+  for (let i = 0; i <= s1.length; i++) {
+    let lastValue = i;
+    for (let j = 0; j <= s2.length; j++) {
+      if (i === 0) {
+        costs[j] = j;
+      } else {
+        if (j > 0) {
+          let newValue = costs[j - 1];
+          if (s1.charAt(i - 1) !== s2.charAt(j - 1)) {
+            newValue = Math.min(Math.min(newValue, lastValue), costs[j]) + 1;
+          }
+          costs[j - 1] = lastValue;
+          lastValue = newValue;
+        }
+      }
+    }
+    if (i > 0) {
+      costs[s2.length] = lastValue;
+    }
+  }
+  return costs[s2.length];
 }
 
 // Start des Spiels beim Laden der Seite
